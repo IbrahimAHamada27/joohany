@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حكايتنا | يوسف & بسبوسة ❤️</title>
+  <meta name="description" content="موقع خاص لذكريات وحب يوسف هاني وبسبوسة - قصة حب لا تنتهي">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700;800;900&family=Reem+Kufi:wght@400;600;700&family=Alexandria:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Floating Hearts Background Canvas -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- ==================== LOCK / PASSCODE SCREEN ==================== -->
+  <div id="lock-screen" class="lock-screen active">
+    <div class="lock-backdrop"></div>
+    <div class="lock-container">
+      
+      <!-- Video Intro Box -->
+      <div class="lock-video-wrapper" id="video-box">
+        <div class="lock-video-badge"><i class="fa-solid fa-heart beat"></i> ذكرياتنا سوا ❤️</div>
+        
+        <!-- Video Sound Toggle Button -->
+        <button id="video-sound-toggle" class="video-sound-btn" type="button" title="تشغيل / كتم الصوت">
+          <i class="fa-solid fa-volume-high" id="video-sound-icon"></i>
+          <span id="video-sound-text">الصوت يعمل 🔊</span>
+        </button>
+
+        <video id="intro-video" class="lock-video" loop playsinline autoplay>
+          <source src="عاوز الفيد دا اول لما يفتح السايت .mp4" type="video/mp4">
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+        <div class="video-overlay-glow"></div>
+      </div>
+
+      <div class="lock-card glass-panel">
+        <div class="lock-icon-glow">
+          <i class="fa-solid fa-heart beat"></i>
+        </div>
+        
+        <h1 class="lock-title">مملكة حب يوسف & بسبوسة ✨</h1>
+        <p class="lock-subtitle">
+          هذا المكان صُنع بكل حب لملكة قلبي وبنت خالتي وصاحبة عمري.. 
+          <br>
+          <span class="highlight-text">أدخلي تاريخ اليوم اللي ابتدت فيه حكايتنا أو كلمة السر 💍</span>
+        </p>
+
+        <!-- Romantic Login Form -->
+        <div class="lock-form-box">
+          
+          <!-- Date Fields Section -->
+          <div class="form-section-title">
+            <i class="fa-solid fa-calendar-days"></i>
+            <span>تاريخ ارتباطنا (اليوم / الشهر / السنة):</span>
+          </div>
+          
+          <div class="date-inputs-row" dir="ltr">
+            <div class="date-field-group">
+              <span class="date-sublabel">يوم</span>
+              <input type="text" id="date-day" maxlength="2" placeholder="--" />
+            </div>
+            <div class="date-slash">/</div>
+            <div class="date-field-group">
+              <span class="date-sublabel">شهر</span>
+              <input type="text" id="date-month" maxlength="2" placeholder="--" />
+            </div>
+            <div class="date-slash">/</div>
+            <div class="date-field-group year-group">
+              <span class="date-sublabel">سنة</span>
+              <input type="text" id="date-year" maxlength="4" placeholder="----" />
+            </div>
+          </div>
+
+          <!-- Secret Word Section -->
+          <div class="form-section-title" style="margin-top: 14px;">
+            <i class="fa-solid fa-key"></i>
+            <span>أو كلمة السر الخاصة بينا:</span>
+          </div>
+
+          <div class="input-wrapper-keyword">
+            <input 
+              type="text" 
+              id="passcode-input" 
+              placeholder="اكتبي كلمة السر هنا..." 
+              autocomplete="off"
+            />
+          </div>
+
+          <div id="lock-error-msg" class="error-msg"></div>
+
+          <button type="button" id="submit-passcode" class="btn-unlock-main">
+            <i class="fa-solid fa-heart"></i>
+            <span>دخول إلى عالم حبنا</span>
+            <i class="fa-solid fa-sparkles"></i>
+          </button>
+        </div>
+
+        <div class="lock-footer">
+          <span>من يوسفتك لأغلى بسبوسة في الدنيا 💕</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ==================== MAIN APPLICATION ==================== -->
+  <div id="main-content" class="main-content hidden">
+
+    <!-- Top Navigation Header -->
+    <header class="top-nav glass-panel">
+      <div class="nav-brand">
+        <span class="brand-names">يوسفتي <i class="fa-solid fa-heart heart-pulse"></i> بسبوسة</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link active"><i class="fa-solid fa-sparkles"></i> البداية</a>
+        <a href="#counter-section" class="nav-link"><i class="fa-solid fa-hourglass-half"></i> عداد حبنا</a>
+        <a href="#first-memory" class="nav-link"><i class="fa-solid fa-camera-retro"></i> أول لقطة</a>
+        <a href="#gallery" class="nav-link"><i class="fa-solid fa-images"></i> ألبومنا</a>
+        <a href="#letters" class="nav-link"><i class="fa-solid fa-envelope-open-text"></i> جواباتي ليكي</a>
+        <a href="#promises" class="nav-link"><i class="fa-solid fa-hand-holding-heart"></i> عهود يوسف</a>
+      </nav>
+      <div class="nav-actions">
+        <button id="toggle-audio-btn" class="nav-icon-btn" title="كتم/تشغيل الأغنية">
+          <i class="fa-solid fa-volume-high" id="nav-sound-icon"></i>
+        </button>
+        <button id="surprise-btn" class="nav-love-btn">
+          <i class="fa-solid fa-gift"></i> جرعة حب
+        </button>
+      </div>
+    </header>
+
+    <!-- Floating Spotify-Style Audio Player -->
+    <div class="spotify-floating-player glass-panel" id="spotify-player">
+      <div class="spotify-track-info">
+        <div class="vinyl-art" id="vinyl-disk">
+          <img src="اول مره بعد الارتباط .jpeg" alt="غلاف الأغنية">
+          <div class="vinyl-center"></div>
+        </div>
+        <div class="track-details">
+          <span class="track-title">أغنية "بحبك" 💖</span>
+          <span class="track-artist">إهداء من يوسف هاني إلى بسبوسة</span>
+        </div>
+      </div>
+
+      <div class="spotify-controls">
+        <div class="playback-buttons">
+          <button id="btn-prev" class="control-btn" title="إعادة من البداية">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+          <button id="btn-play-pause" class="control-btn play-btn" title="تشغيل / إيقاف">
+            <i class="fa-solid fa-pause" id="play-pause-icon"></i>
+          </button>
+          <button id="btn-next" class="control-btn" title="تقديم 10 ثواني">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+          <button id="btn-speed" class="control-btn speed-btn" title="سرعة التشغيل">
+            <span id="speed-indicator">1.0x</span>
+          </button>
+          <button id="btn-loop" class="control-btn active" title="تكرار الأغنية">
+            <i class="fa-solid fa-repeat"></i>
+          </button>
+        </div>
+
+        <div class="progress-container">
+          <span id="current-time" class="time-label">00:00</span>
+          <div class="progress-bar-wrapper" id="progress-wrapper">
+            <div class="progress-bar" id="audio-progress"></div>
+          </div>
+          <span id="total-duration" class="time-label">--:--</span>
+        </div>
+      </div>
+
+      <div class="spotify-volume">
+        <button id="volume-mute-btn" class="volume-btn">
+          <i class="fa-solid fa-volume-high" id="player-volume-icon"></i>
+        </button>
+        <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="1">
+      </div>
+
+      <!-- Hidden Audio Element -->
+      <audio id="romantic-audio" preload="auto" loop>
+        <source src="اغنيه بحبك.mp3" type="audio/mpeg">
+        <source src="اغنيه بحبك.weba" type="audio/webm">
+        متصفحك لا يدعم مشغل الصوت.
+      </audio>
+    </div>
+
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero" class="hero-section">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-infinity"></i> قصة حب كُتبت في السماء
+        </div>
+        
+        <h1 class="hero-title">
+          إلى ملكة قلبي <span class="gradient-text">"بسبوسة"</span>
+        </h1>
+        
+        <p class="hero-lead">
+          من حبيبك وصاحبك وخطيبك <span class="bold-text">"يوسفتك"</span>.. 
+          <br>
+          بنت خالتي، وصاحبة عمري، والحلم اللي ربنا كرمني بيه وبقى أجمل حقيقة في حياتي كلها.
+        </p>
+
+        <!-- Birthday & Special Info Cards -->
+        <div class="hero-milestones">
+          <div class="milestone-card glass-panel">
+            <div class="card-icon"><i class="fa-solid fa-cake-candles"></i></div>
+            <div class="card-text">
+              <span class="m-label">يوم ميلاد سكر حياتي</span>
+              <span class="m-value">1 أبريل 2007 🎂</span>
+              <span class="m-sub">اليوم اللي اتولدت فيه أجمل بنت في الدنيا</span>
+            </div>
+          </div>
+
+          <div class="milestone-card glass-panel highlight">
+            <div class="card-icon"><i class="fa-solid fa-heart-circle-bolt"></i></div>
+            <div class="card-text">
+              <span class="m-label">تاريخ ارتباطنا الرسمي</span>
+              <span class="m-value">1 أبريل 2025 💍</span>
+              <span class="m-sub">أعظم قرار وأحلى بداية لحياتنا سوا</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <a href="#counter-section" class="btn-primary">
+            <i class="fa-solid fa-clock-rotate-left"></i> احسبي حبنا
+          </a>
+          <a href="#gallery" class="btn-secondary">
+            <i class="fa-solid fa-images"></i> شوفي صورنا
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== LOVE COUNTER SECTION ==================== -->
+    <section id="counter-section" class="counter-section">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-heart"></i> كل لحظة بتفرق</span>
+        <h2 class="section-title">عداد نبضات حبنا منذ 1 أبريل 2025</h2>
+        <p class="section-desc">كل ثانية بتعدي وإنتي معايا بتسوى الدنيا وما فيها يا بسبوستي</p>
+      </div>
+
+      <!-- Live Counters -->
+      <div class="counter-grid">
+        <div class="counter-card glass-panel">
+          <span class="counter-num" id="cnt-days">0</span>
+          <span class="counter-unit">يــــوم</span>
+          <div class="counter-dot"></div>
+        </div>
+        <div class="counter-card glass-panel">
+          <span class="counter-num" id="cnt-hours">0</span>
+          <span class="counter-unit">ســـاعـة</span>
+          <div class="counter-dot"></div>
+        </div>
+        <div class="counter-card glass-panel">
+          <span class="counter-num" id="cnt-minutes">0</span>
+          <span class="counter-unit">دقيقـــة</span>
+          <div class="counter-dot"></div>
+        </div>
+        <div class="counter-card glass-panel">
+          <span class="counter-num" id="cnt-seconds">0</span>
+          <span class="counter-unit">ثانيـــة</span>
+          <div class="counter-dot"></div>
+        </div>
+      </div>
+
+      <div class="counter-facts glass-panel">
+        <div class="fact-item">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <span>أكتر من <strong><span id="heartbeats-estimate">0</span></strong> نبضة قلب عاشها قلبي بحبك</span>
+        </div>
+        <div class="fact-divider"></div>
+        <div class="fact-item">
+          <i class="fa-solid fa-wand-magic"></i>
+          <span>حكايتنا مستمرة لآخر العمر.. والخطوبة قريباً جداً يا قلبي 💍</span>
+        </div>
+      </div>
+
+      <!-- Birthday Next Countdown -->
+      <div class="birthday-banner glass-panel">
+        <div class="bday-icon"><i class="fa-solid fa-gift"></i></div>
+        <div class="bday-info">
+          <h3>العد التنازلي لعيد ميلاد بسبوسة القادم (1 أبريل) 🎉</h3>
+          <p id="bday-countdown-text">جاري حساب الأيام...</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== FIRST PHOTO SPOTLIGHT ==================== -->
+    <section id="first-memory" class="first-memory-section">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-star"></i> أغلى لقطة في عمري</span>
+        <h2 class="section-title">أول صورة لينا سوا بعد الارتباط ❤️</h2>
+        <p class="section-desc">الصورة دي مش مجرد صورة.. دي بداية العهد وأول خطوة في طريقنا للأبد</p>
+      </div>
+
+      <div class="first-photo-container">
+        <div class="polaroid-frame featured">
+          <div class="pin-badge"><i class="fa-solid fa-thumbtack"></i></div>
+          <div class="polaroid-img-box">
+            <img src="اول مره بعد الارتباط .jpeg" alt="أول صورة بعد الارتباط" class="zoomable-img">
+            <div class="photo-shine"></div>
+          </div>
+          <div class="polaroid-caption">
+            <span class="caption-date">1 أبريل 2025</span>
+            <p class="caption-text">"أول مرة عيوني تلمع كدا وإنتي جنبي.. كنت حاسس إني ملكت الدنيا كلها يا بسبوستي"</p>
+          </div>
+        </div>
+
+        <div class="first-memory-text glass-panel">
+          <div class="quote-symbol"><i class="fa-solid fa-quote-right"></i></div>
+          <h3>اليوم اللي عمري ما هنساه..</h3>
+          <p>
+            فاكرة اليوم ده يا بسبوستي؟ لما اتجمعنا وبصيت في عينيكي وحسيت إن خلاص.. كل تعب وكل انتظار هونتي عليا بيه. 
+            كنت شايف قدامي مش بس بنت خالتي وصاحبتي.. كنت شايف مراتي المستقبلية وأم عيالي وسندي في الدنيا كلها.
+          </p>
+          <div class="memory-badges">
+            <span class="badge"><i class="fa-solid fa-heart"></i> حب صادق</span>
+            <span class="badge"><i class="fa-solid fa-ring"></i> خطيبتي قريباً</span>
+            <span class="badge"><i class="fa-solid fa-infinity"></i> لآخر العمر</span>
+          </div>
+          <div class="signature-box">
+            <span>حبيبك للأبد: <strong>يوسف هاني (يوسفتك)</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== PHOTO GALLERY ==================== -->
+    <section id="gallery" class="gallery-section">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-camera"></i> ألبوم حكاياتنا</span>
+        <h2 class="section-title">ضحكاتنا وذكرياتنا اللي محفورة في القلب 📸</h2>
+        <p class="section-desc">كل صورة ليها حكاية، وكل لقطة فيها حب ما ينوصفش</p>
+      </div>
+
+      <!-- Filter Categories -->
+      <div class="gallery-filters">
+        <button class="filter-btn active" data-filter="all">كل الصور</button>
+        <button class="filter-btn" data-filter="sweet">أحلى اللحظات</button>
+        <button class="filter-btn" data-filter="smile">ضحكات وجمال</button>
+        <button class="filter-btn" data-filter="love">حب وغرام</button>
+      </div>
+
+      <!-- Gallery Grid with Polaroids -->
+      <div class="gallery-grid" id="gallery-grid">
+        
+        <!-- Item 1 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.29 PM (1).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">ضحكتك حياة ❤️</span>
+              <button class="like-btn" title="أحببتها"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="gallery-card polaroid" data-category="smile">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.29 PM (2).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">أحلى بسبوسة في الكون ✨</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="gallery-card polaroid" data-category="love">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (1).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">عيونك أماني وسكني 🌸</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (2).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">أجمل صدفة ونصيب 💕</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 5 -->
+        <div class="gallery-card polaroid" data-category="love">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (3).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">يا سندي وروحي 🥰</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 6 -->
+        <div class="gallery-card polaroid" data-category="smile">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (4).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">القمر اللي منور دنيتي 🌙</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 7 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (5).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">ملكة قلبي وبس 👑</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 8 -->
+        <div class="gallery-card polaroid" data-category="love">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (6).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">معاكِ كل حاجة أحلى 🌹</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 9 -->
+        <div class="gallery-card polaroid" data-category="smile">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM (7).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">ضحكتك سر سعادتي 💖</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 10 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.34 PM.jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">كل يوم بحبك أكتر 🌟</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 11 -->
+        <div class="gallery-card polaroid" data-category="love">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM (1).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">يا رب دايماً سوا 💍</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 12 -->
+        <div class="gallery-card polaroid" data-category="smile">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM (2).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">بنت خالي وأغلى ناسي 🌷</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 13 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM (3).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">يا سكر وروح قلبي 🍯</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 14 -->
+        <div class="gallery-card polaroid" data-category="love">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM (4).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">عشقي ليكي ملوش نهاية ❤️</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 15 -->
+        <div class="gallery-card polaroid" data-category="smile">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM (5).jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">أجمل ابتسامة في الدنيا 😊</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 16 -->
+        <div class="gallery-card polaroid" data-category="sweet">
+          <div class="polaroid-inner">
+            <img src="WhatsApp Image 2026-09-25 at 3.24.37 PM.jpeg" alt="لحظة جميلة" class="zoomable-img" loading="lazy">
+            <div class="polaroid-footer">
+              <span class="p-title">حبيبتي وخطيبتي وبس 💎</span>
+              <button class="like-btn"><i class="fa-regular fa-heart"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== LOVE LETTERS & POEMS ==================== -->
+    <section id="letters" class="letters-section">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-feather-pointed"></i> من قلبي لقلبك</span>
+        <h2 class="section-title">جوابات ورسايل حب لبسبوستي 💌</h2>
+        <p class="section-desc">اضغطي على أي جواب عشان تفتحيه وتشوفي يوسف كاتبلك إيه</p>
+      </div>
+
+      <div class="letters-grid">
+        
+        <!-- Letter 1 -->
+        <div class="envelope-card glass-panel" onclick="openLetter(1)">
+          <div class="envelope-icon"><i class="fa-solid fa-envelope"></i></div>
+          <h3>رسالة إلى بنت خالتي وصاحبة عمري</h3>
+          <p>عن أول يوم دخلتي فيه قلبي وغيرتي كل ملامح حياتي..</p>
+          <span class="open-badge">افتحي الرسالة ✨</span>
+        </div>
+
+        <!-- Letter 2 -->
+        <div class="envelope-card glass-panel" onclick="openLetter(2)">
+          <div class="envelope-icon"><i class="fa-solid fa-heart"></i></div>
+          <h3>ليه بسبوسة بالذات ومفيش غيرك؟</h3>
+          <p>كلام عمري ما قلته لحد غيرك.. عن سر لمعة عيوني وإنتي معايا..</p>
+          <span class="open-badge">افتحي الرسالة ✨</span>
+        </div>
+
+        <!-- Letter 3 -->
+        <div class="envelope-card glass-panel" onclick="openLetter(3)">
+          <div class="envelope-icon"><i class="fa-solid fa-ring"></i></div>
+          <h3>رسالة يوم خطوبتنا وحلم بيتنا</h3>
+          <p>عن الحلم اللي بنقرب منه كل يوم، والخاتم اللي مستني صباعك..</p>
+          <span class="open-badge">افتحي الرسالة ✨</span>
+        </div>
+
+        <!-- Letter 4 -->
+        <div class="envelope-card glass-panel" onclick="openLetter(4)">
+          <div class="envelope-icon"><i class="fa-solid fa-cake-candles"></i></div>
+          <h3>لكل 1 أبريل في عمرك وعمرنا</h3>
+          <p>تاريخ ميلادك وتاريخ ارتباطنا.. أعظم يومين اتجمعوا في يوم واحد!</p>
+          <span class="open-badge">افتحي الرسالة ✨</span>
+        </div>
+
+      </div>
+
+      <!-- Romantic Poems Carousel -->
+      <div class="poems-container glass-panel">
+        <div class="poem-decor"><i class="fa-solid fa-quote-right"></i></div>
+        <div class="poem-slider" id="poem-slider">
+          <div class="poem-slide active">
+            <p class="poem-arabic">
+              "لو كان لي أن أكون شيئاً لكِ.. 
+              لكنتُ نبضاً لا يفارق قلبكِ أبداً، 
+              يا بسبوسة أيامي، وسكر سنيني، ونور عيني اللي بشوف بيه الدنيا."
+            </p>
+            <span class="poem-author">— من يوسفتك ❤️</span>
+          </div>
+          <div class="poem-slide">
+            <p class="poem-arabic">
+              "يا بنت خالتي اللي في حبك تاهت كل المعاني.. 
+              كنتي في الأول صاحبة وسند، والنهارده إنتي النفس اللي بتنفسه 
+              وخطيبتي اللي فخور بيها قدام الدنيا كلها."
+            </p>
+            <span class="poem-author">— يوسف هاني</span>
+          </div>
+          <div class="poem-slide">
+            <p class="poem-arabic">
+              "كل الوجوه تغيب حين تبتسمين.. 
+              ولا يبقى في هذا الكون إلا عينيكِ، 
+              وتاريخ ارتباطنا 1/4/2025 سيظل أعظم أعيادي."
+            </p>
+            <span class="poem-author">— حبيبك للأبد</span>
+          </div>
+        </div>
+
+        <div class="poem-dots">
+          <span class="p-dot active" onclick="setPoem(0)"></span>
+          <span class="p-dot" onclick="setPoem(1)"></span>
+          <span class="p-dot" onclick="setPoem(2)"></span>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== 10 PROMISES SECTION ==================== -->
+    <section id="promises" class="promises-section">
+      <div class="section-header">
+        <span class="section-tag"><i class="fa-solid fa-scroll"></i> عهد على قلبي</span>
+        <h2 class="section-title">عهود يوسف لبسبوسة لآخر العمر 💍</h2>
+        <p class="section-desc">وعود محفورة في قلبي ومكتوبة بدمي، هفضل محافظ عليها مهما مرت السنين</p>
+      </div>
+
+      <div class="promises-grid">
+        <div class="promise-item glass-panel">
+          <div class="p-num">1</div>
+          <div class="p-content">
+            <h4>هكون ضهرك وسندك</h4>
+            <p>مش هسمح لأي حاجة في الدنيا تكسر خاطرك أو تزعلك أبداً.</p>
+          </div>
+        </div>
+
+        <div class="promise-item glass-panel">
+          <div class="p-num">2</div>
+          <div class="p-content">
+            <h4>ضحكتك هتفضل أولويتي</h4>
+            <p>هعمل كل اللي أقدر عليه عشان أشوف الضحكة اللي بتنورلي حياتي.</p>
+          </div>
+        </div>
+
+        <div class="promise-item glass-panel">
+          <div class="p-num">3</div>
+          <div class="p-content">
+            <h4>حب يكبر كل يوم</h4>
+            <p>حبي ليكي في 2025 هيكون نقطة في بحر حبي ليكي في كل السنين الجاية.</p>
+          </div>
+        </div>
+
+        <div class="promise-item glass-panel">
+          <div class="p-num">4</div>
+          <div class="p-content">
+            <h4>صاحبك قبل خطيبك</h4>
+            <p>هفضل أسمعلك وأحكيلك كل تفاصيل يومي، وتفضلي أنتي بير أسراري.</p>
+          </div>
+        </div>
+
+        <div class="promise-item glass-panel">
+          <div class="p-num">5</div>
+          <div class="p-content">
+            <h4>الخطوبة والبيت اللي بنحلم بيه</h4>
+            <p>هنكمل حلمنا سوا وهنعمل أجمل بيت مليان دفا وحب وبركة.</p>
+          </div>
+        </div>
+
+        <div class="promise-item glass-panel">
+          <div class="p-num">6</div>
+          <div class="p-content">
+            <h4>أفهمك من غير كلام</h4>
+            <p>نظرة واحدة في عينيكي كفاية عشان أعرف إنتي محتاجة إيه وأكون جنبك.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== REASON GENERATOR / INTERACTIVE ==================== -->
+    <section class="interactive-love-section">
+      <div class="love-box glass-panel">
+        <div class="love-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h2>ليه يوسف بيحب بسبوسة؟ ❤️</h2>
+        <p>اضغطي على الزرار وشوفي سبب من ملايين الأسباب اللي مخلية قلبي دايب فيكي</p>
+        
+        <div class="reason-display" id="reason-display">
+          "عشان ضحكتك بتخلي كل هموم الدنيا تروح في ثانية واحدة..."
+        </div>
+
+        <button id="btn-next-reason" class="btn-primary pulse">
+          <i class="fa-solid fa-heart"></i> سبب جديد من يوسفتك
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="site-footer glass-panel">
+      <div class="footer-content">
+        <div class="footer-heart"><i class="fa-solid fa-heart heart-pulse"></i></div>
+        <h3>يوسف & بسبوسة</h3>
+        <p>مع بعض في الدنيا، وفي الجنة سوا إن شاء الله ❤️</p>
+        <span class="footer-date">بداية الحكاية: 01/04/2025 | عيد ميلاد أميرتي: 01/04/2007</span>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Letter Content Modal -->
+  <div id="letter-modal" class="modal">
+    <div class="modal-backdrop" onclick="closeLetterModal()"></div>
+    <div class="modal-card glass-panel letter-modal-card">
+      <button class="modal-close-btn" onclick="closeLetterModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="letter-paper">
+        <div class="wax-seal"><i class="fa-solid fa-heart"></i></div>
+        <h2 id="modal-letter-title" class="letter-title">عنوان الرسالة</h2>
+        <div id="modal-letter-body" class="letter-body">محتوى الرسالة...</div>
+        <div class="letter-sign">
+          <span>المخلص لقلبك دائماً:</span>
+          <strong>يوسفتك ❤️</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="image-modal" class="modal">
+    <div class="modal-backdrop" onclick="closeImageModal()"></div>
+    <div class="modal-card image-lightbox-card">
+      <button class="modal-close-btn" onclick="closeImageModal()"><i class="fa-solid fa-xmark"></i></button>
+      <img id="lightbox-img" src="" alt="صورة مكبرة">
+      <p id="lightbox-caption" class="lightbox-caption"></p>
+    </div>
+  </div>
+
+  <!-- Surprise Love Modal -->
+  <div id="surprise-modal" class="modal">
+    <div class="modal-backdrop" onclick="closeSurpriseModal()"></div>
+    <div class="modal-card glass-panel surprise-card">
+      <button class="modal-close-btn" onclick="closeSurpriseModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="surprise-icon"><i class="fa-solid fa-crown beat"></i></div>
+      <h2>جرعة حب طارئة لبسبوستي 💕</h2>
+      <p id="surprise-text">
+        يا بسبوسة.. لو لفيت الكون كله مش هلاقي بنت أطيب ولا أحن ولا أجمل منك. 
+        ربنا يخليكي ليا وتفضلي دايماً منورة حياتي يا خطيبتي وروحي!
+      </p>
+      <button class="btn-primary" onclick="triggerConfettiShower(); closeSurpriseModal();">
+        <i class="fa-solid fa-sparkles"></i> بحبك يا يوسف
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
