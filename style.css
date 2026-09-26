@@ -746,9 +746,12 @@ body {
 .hero-section {
   padding: 70px 20px 50px;
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
   position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .hero-glow {
@@ -756,8 +759,9 @@ body {
   top: 10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 500px;
-  height: 350px;
+  width: 100%;
+  max-width: 420px;
+  height: 300px;
   background: radial-gradient(circle, rgba(255, 77, 109, 0.25) 0%, rgba(201, 24, 74, 0.05) 70%, transparent 100%);
   filter: blur(50px);
   z-index: -1;
@@ -1756,42 +1760,104 @@ section {
 }
 
 @media (max-width: 600px) {
-  body {
+  html, body {
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    position: relative;
     padding: 0;
-    overflow-x: hidden;
+    margin: 0;
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden !important;
+    padding-bottom: 150px;
+  }
+
+  /* Top Navigation Mobile Optimization */
+  .top-nav {
+    width: calc(100% - 16px);
+    margin: 8px auto 15px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 30px;
+    max-width: 100%;
+  }
+
+  .brand-names {
+    font-size: 1.05rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .nav-actions {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav-icon-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .nav-love-btn {
+    padding: 6px 10px;
+    font-size: 0.74rem;
+    gap: 4px;
+    white-space: nowrap;
   }
 
   section {
-    padding: 35px 12px;
+    padding: 25px 12px;
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
+    overflow-x: hidden;
   }
 
   /* Hero Adjustments */
   .hero-section {
-    padding: 30px 12px 25px;
+    padding: 20px 10px 25px;
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .hero-badge {
+    font-size: 0.82rem;
+    padding: 6px 14px;
+    margin-bottom: 12px;
   }
 
   .hero-title {
-    font-size: clamp(1.6rem, 7.5vw, 2.4rem);
-    margin-bottom: 15px;
+    font-size: clamp(1.6rem, 7.5vw, 2.3rem);
+    margin-bottom: 12px;
+    word-break: break-word;
   }
 
   .hero-lead {
-    font-size: 0.95rem;
-    line-height: 1.7;
+    font-size: 0.92rem;
+    line-height: 1.65;
     padding: 0 4px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     word-break: break-word;
   }
 
   .hero-milestones {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 12px;
     width: 100%;
-    margin: 0 0 25px;
+    max-width: 100%;
+    margin: 0 0 20px;
     box-sizing: border-box;
   }
 
@@ -1799,23 +1865,25 @@ section {
     padding: 12px 14px;
     gap: 12px;
     width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     justify-content: flex-start;
   }
 
   .milestone-card .card-icon {
-    width: 44px;
-    height: 44px;
-    font-size: 1.2rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.15rem;
     border-radius: 12px;
+    flex-shrink: 0;
   }
 
   .m-value {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 
   .m-sub {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
   }
 
   .hero-cta-group {
@@ -1838,7 +1906,7 @@ section {
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - 16px);
-    max-width: 100%;
+    max-width: calc(100% - 16px);
     padding: 8px 12px;
     border-radius: 18px;
     gap: 6px;
@@ -1854,8 +1922,8 @@ section {
   }
 
   .vinyl-art {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     flex-shrink: 0;
   }
 
@@ -1866,14 +1934,14 @@ section {
   }
 
   .track-title {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .track-artist {
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1921,71 +1989,146 @@ section {
   .counter-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-  }
-
-  .counter-card {
-    padding: 16px 8px;
-  }
-
-  .counter-num {
-    font-size: 1.8rem;
-  }
-
-  .counter-unit {
-    font-size: 0.88rem;
-  }
-
-  /* Lock Card Mobile */
-  .lock-screen {
-    padding: 12px;
-  }
-
-  .lock-card {
-    padding: 20px 14px;
     width: 100%;
     box-sizing: border-box;
   }
 
-  .lock-title {
-    font-size: 1.35rem;
+  .counter-card {
+    padding: 14px 6px;
+    box-sizing: border-box;
   }
 
-  .lock-video-wrapper {
-    max-width: 100%;
+  .counter-num {
+    font-size: 1.7rem;
   }
 
-  .btn-unlock-main {
-    padding: 12px 18px;
+  .counter-unit {
+    font-size: 0.82rem;
+  }
+
+  .counter-facts {
+    padding: 14px 12px;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .fact-divider {
+    display: none;
+  }
+
+  .birthday-banner {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+
+  .bday-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .bday-info h3 {
     font-size: 0.95rem;
   }
 
+  /* Lock Card Mobile */
+  .lock-screen {
+    padding: 10px;
+    width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .lock-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .lock-card {
+    padding: 18px 12px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .lock-title {
+    font-size: 1.25rem;
+  }
+
+  .lock-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .lock-video-wrapper {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-unlock-main {
+    padding: 12px 16px;
+    font-size: 0.92rem;
+  }
+
   .date-inputs-row {
-    padding: 8px 10px;
-    gap: 6px;
+    padding: 8px 8px;
+    gap: 4px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .date-field-group input {
-    width: 44px;
-    font-size: 1.05rem;
+    width: 40px;
+    font-size: 1rem;
     padding: 6px 2px;
   }
 
   .date-field-group.year-group input {
-    width: 65px;
+    width: 60px;
+  }
+
+  /* Polaroids - Disable rotation on mobile to prevent overflow */
+  .gallery-card.polaroid,
+  .gallery-card.polaroid:nth-child(even),
+  .gallery-card.polaroid:nth-child(odd) {
+    transform: none !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .polaroid-frame.featured {
+    transform: none !important;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   /* Gallery Grid Mobile */
   .gallery-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .letters-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .promises-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .love-box {
+    padding: 25px 14px;
+  }
+
+  .reason-display {
+    font-size: 1.15rem;
+    padding: 15px 10px;
   }
 }
 
