@@ -1732,60 +1732,260 @@ section {
 }
 
 /* ===================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN & MOBILE FIXES
    =================================================== */
 @media (max-width: 900px) {
   .counter-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
   .first-photo-container {
     grid-template-columns: 1fr;
+    gap: 25px;
   }
   .polaroid-frame.featured {
-    max-width: 380px;
+    max-width: 100%;
     margin: 0 auto;
   }
-  .spotify-floating-player {
-    flex-direction: column;
-    border-radius: var(--radius-lg);
-    padding: 16px;
-    gap: 12px;
-  }
-  .spotify-track-info {
-    width: 100%;
-    justify-content: flex-start;
-  }
-  .spotify-controls {
-    width: 100%;
-  }
-  .spotify-volume {
-    display: none; /* Hide volume on mobile to save space */
-  }
   .main-content {
-    padding-bottom: 160px;
+    padding-bottom: 150px;
   }
   .nav-links {
     display: none; /* Simplify top nav for mobile */
   }
 }
 
-@media (max-width: 480px) {
-  .counter-grid {
-    grid-template-columns: 1fr 1fr;
+@media (max-width: 600px) {
+  body {
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  section {
+    padding: 35px 12px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Hero Adjustments */
+  .hero-section {
+    padding: 30px 12px 25px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-title {
+    font-size: clamp(1.6rem, 7.5vw, 2.4rem);
+    margin-bottom: 15px;
+  }
+
+  .hero-lead {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    padding: 0 4px;
+    margin-bottom: 25px;
+    word-break: break-word;
+  }
+
+  .hero-milestones {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    width: 100%;
+    margin: 0 0 25px;
+    box-sizing: border-box;
+  }
+
+  .milestone-card {
+    padding: 12px 14px;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: flex-start;
+  }
+
+  .milestone-card .card-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+  }
+
+  .m-value {
+    font-size: 1.1rem;
+  }
+
+  .m-sub {
+    font-size: 0.74rem;
+  }
+
+  .hero-cta-group {
+    flex-direction: column;
+    width: 100%;
     gap: 10px;
   }
-  .counter-card {
-    padding: 20px 10px;
+
+  .hero-cta-group a {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 12px 20px;
   }
+
+  /* Spotify Floating Player Mobile Perfection */
+  .spotify-floating-player {
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 16px);
+    max-width: 100%;
+    padding: 8px 12px;
+    border-radius: 18px;
+    gap: 6px;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+
+  .spotify-track-info {
+    width: 100%;
+    min-width: 0;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+
+  .vinyl-art {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+  }
+
+  .track-details {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .track-title {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-artist {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .spotify-controls {
+    width: 100%;
+    max-width: 100%;
+    gap: 4px;
+  }
+
+  .playback-buttons {
+    gap: 14px;
+  }
+
+  .control-btn.play-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .control-btn {
+    font-size: 0.9rem;
+  }
+
+  .speed-btn {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+  }
+
+  .progress-container {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .time-label {
+    font-size: 0.68rem;
+  }
+
+  .spotify-volume {
+    display: none;
+  }
+
+  /* Counter Grid Mobile */
+  .counter-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .counter-card {
+    padding: 16px 8px;
+  }
+
+  .counter-num {
+    font-size: 1.8rem;
+  }
+
+  .counter-unit {
+    font-size: 0.88rem;
+  }
+
+  /* Lock Card Mobile */
+  .lock-screen {
+    padding: 12px;
+  }
+
+  .lock-card {
+    padding: 20px 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .lock-title {
+    font-size: 1.35rem;
+  }
+
+  .lock-video-wrapper {
+    max-width: 100%;
+  }
+
+  .btn-unlock-main {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
+
+  .date-inputs-row {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
+  .date-field-group input {
+    width: 44px;
+    font-size: 1.05rem;
+    padding: 6px 2px;
+  }
+
+  .date-field-group.year-group input {
+    width: 65px;
+  }
+
+  /* Gallery Grid Mobile */
   .gallery-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
-  .lock-card {
-    padding: 25px 15px;
+
+  .letters-grid {
+    grid-template-columns: 1fr;
   }
-  .btn-unlock {
-    padding: 10px 18px;
-    font-size: 0.9rem;
+
+  .promises-grid {
+    grid-template-columns: 1fr;
   }
 }
 
